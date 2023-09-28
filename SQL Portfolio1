@@ -1,0 +1,58 @@
++--Dataset: Covid19 from ourworldindata.org
++--Source: https://ourworldindata.org/explorers/coronavirus-data-explorer?zoomToSelection=true&time=2020-03-01..latest&facet=none&country=USA~GBR~CAN~DEU~ITA~IND&pickerSort=asc&pickerMetric=location&Metric=Confirmed+cases&Interval=7-day+rolling+average&Relative+to+Population=true&Color+by+test+positivity=false
++--Queried using: MS SQL
+
++# Display the data Covid Data based on location, date, total case, new cases, total deaths, population
+        SELECT *
+        FROM IndahPortofolio..VAKSINCOVID
+        ORDER BY 3,4
+
+        SELECT location, date, total_cases, new_cases, total_deaths, population
+        FROM IndahPortofolio..KEMATIANCOVID
+        ORDER BY 1,2
+
++# Displya Covid data of Brunei Darussalam
+        SELECT location, date, total_cases, total_deaths, (CONVERT(float, total_deaths)/NULLIF(CONVERT(float, total_cases),0))*100 AS PresentaseKematian
+        FROM IndahPortofolio..KEMATIANCOVID
+        WHERE location LIKE '%Brunei%'
+        ORDER BY 1,2
+
+        SELECT location, date, population, total_cases, (CONVERT(float, population)/NULLIF(CONVERT(float, total_cases),0))*100 AS PresentaseKematian
+        FROM IndahPortofolio..KEMATIANCOVID
+        --WHERE location LIKE '%Brunei%'
+        ORDER BY 1,2
+
+        SELECT location, population, total_cases, (CONVERT(float, population)/NULLIF(CONVERT(float, total_cases),0))*100 AS PresentaseKasus
+        FROM IndahPortofolio..KEMATIANCOVID
+        --WHERE location LIKE '%Brunei%'
+        Group by location, population, total_cases
+        ORDER BY PresentaseKasus DESC
+
+        SELECT location, MAX(total_deaths) as TotalKematian
+        FROM IndahPortofolio..KEMATIANCOVID
+        --WHERE location LIKE '%Brunei%'
+        WHERE continent IS NOT NULL
+        Group by location
+        ORDER BY TotalKematian DESC
+
++# Display Covid data of China
+        SELECT *
+        FROM IndahPortofolio..KEMATIANCOVID
+
+        SELECT location, date, new_cases, new_deaths
+        FROM IndahPortofolio..KEMATIANCOVID
+
+        SELECT location, date, new_cases, new_deaths
+        FROM IndahPortofolio..KEMATIANCOVID
+
+        SELECT location, MAX(new_cases) as KasusBaru, MAX(new_deaths) as KematianBaru
+        FROM IndahPortofolio..KEMATIANCOVID
+        WHERE location LIKE '%China%'
+        GROUP BY location
+
+        SELECT location, MAX(new_cases) as KasusBaru, MAX(new_deaths) as KematianBaru
+        FROM IndahPortofolio..KEMATIANCOVID
+        --WHERE location LIKE '%China%'
+        WHERE continent IS NOT NULL
+        GROUP BY location 
+        ORDER BY KematianBaru DESC
