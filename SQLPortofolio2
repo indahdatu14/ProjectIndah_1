@@ -1,0 +1,98 @@
+--DataSet: Sales April 2019 and August 2019 from Kaggle
+--Source: kaggle.com
+--Queried using: MS SQL
+  Select *
+  FROM IndahTest2..Sales_April_2019$
+
+  SELECT *
+  FROM IndahTest2..Sales_April_2019$
+  ORDER BY 2,3,4
+
+  SELECT Product, [Quantity Ordered],[Order Date]
+  FROM IndahTest2..Sales_April_2019$
+  ORDER BY Product DESC
+
+  SELECT Product, [Price Each],[Order Date]
+  FROM IndahTest2..Sales_April_2019$
+  ORDER BY Product DESC
+
+  SELECT MIN(Product)
+  FROM IndahTest2..Sales_April_2019$
+
+  SELECT MAX(Product)
+  FROM IndahTest2..Sales_April_2019$
+
+  SELECT Product, [Price Each]
+  FROM IndahTest2..Sales_April_2019$
+  GROUP BY Product, [Price Each] 
+
+  SELECT COUNT(Product) as ProdukTerjual, [Price Each] 
+  FROM IndahTest2..Sales_April_2019$
+  GROUP BY Product, [Price Each] 
+
+  SELECT [Order ID], Product, [Quantity Ordered], [Price Each]
+  FROM IndahTest2..Sales_April_2019$
+
+  SELECT [Order ID], Product, [Quantity Ordered], [Price Each]
+  FROM IndahTest2..Sales_April_2019$
+  WHERE Product LIKE 'Google Phone%'
+  ORDER BY 1,2,3,4
+
+  SELECT MAX(Product) AS ProdukTerjual, [Quantity Ordered], [Price Each]
+  FROM IndahTest2..Sales_April_2019$
+  WHERE [Quantity Ordered] IS NOT NULL
+  GROUP BY Product, [Quantity Ordered], [Price Each]
+  ORDER BY [Quantity Ordered] DESC
+
+  SELECT *
+  FROM IndahTest2..Sales_April_2019$
+  WHERE Product IN ('AAABatteries (4-pack)','USB-C Charging Cable');
+
+  Select *
+  FROM IndahTest2..Sales_August_2019$
+
+  SELECT Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_August_2019$
+  GROUP BY Product, [Quantity Ordered]
+  ORDER BY [Quantity Ordered] DESC
+
+  SELECT Sales_April_2019$.Product, Sales_April_2019$.[Quantity Ordered], Sales_April_2019$.[Price Each], Sales_August_2019$.Product, Sales_August_2019$.[Quantity Ordered], Sales_August_2019$.[Price Each]
+  FROM IndahTest2..Sales_April_2019$
+  INNER JOIN Sales_August_2019$ ON Sales_April_2019$.Product = Sales_August_2019$.Product
+  WHERE Sales_April_2019$.[Price Each] > 200
+
+  SELECT Sales_April_2019$.Product, Sales_April_2019$.[Quantity Ordered], Sales_April_2019$.[Price Each], Sales_August_2019$.Product, Sales_August_2019$.[Quantity Ordered], Sales_August_2019$.[Price Each]
+  FROM IndahTest2..Sales_April_2019$
+  INNER JOIN Sales_August_2019$ ON Sales_April_2019$.Product = Sales_August_2019$.Product
+  ORDER BY Sales_April_2019$.[Quantity Ordered], Sales_August_2019$.[Quantity Ordered] DESC
+
+  Select Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_April_2019$
+  UNION
+  Select Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_August_2019$
+
+  Select Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_April_2019$
+  WHERE Product='iPHone'
+  UNION
+  Select Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_August_2019$
+  WHERE Product='iPHone'
+
+  Select Product, [Quantity Ordered],
+  CASE
+      WHEN [Quantity Ordered] < 2 THEN 'TidakLaku'
+  	  WHEN [Quantity Ordered] > 1 THEN 'Laku'
+	    ELSE 'PenjualanTidakBerubah'
+  END AS RangkumanPenjualan
+  FROM IndahTest2..Sales_August_2019$
+
+  SELECT Product, [Quantity Ordered]
+  FROM IndahTest2..Sales_August_2019$
+  WHERE EXISTS (
+		Select 1
+		FROM IndahTest2..Sales_April_2019$
+		WHERE Sales_April_2019$.[Quantity Ordered] = Sales_August_2019$.[Quantity Ordered]
+);
+
