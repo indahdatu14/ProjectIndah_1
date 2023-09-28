@@ -1,6 +1,8 @@
 --DataSet: Sales April 2019 and August 2019 from Kaggle
 --Source: kaggle.com
 --Queried using: MS SQL
+
+# Display the data sales from April 2019 from database IndahTest2
   Select *
   FROM IndahTest2..Sales_April_2019$
 
@@ -8,13 +10,17 @@
   FROM IndahTest2..Sales_April_2019$
   ORDER BY 2,3,4
 
+# Display the data sales based on product, quantity order and order date in April 2019, largest to smallest
   SELECT Product, [Quantity Ordered],[Order Date]
   FROM IndahTest2..Sales_April_2019$
   ORDER BY Product DESC
 
+# Display the data based on price of each product and order date, largest to smallest
   SELECT Product, [Price Each],[Order Date]
   FROM IndahTest2..Sales_April_2019$
   ORDER BY Product DESC
+
+# Display the least sold product data to the most sold
 
   SELECT MIN(Product)
   FROM IndahTest2..Sales_April_2019$
@@ -26,17 +32,25 @@
   FROM IndahTest2..Sales_April_2019$
   GROUP BY Product, [Price Each] 
 
+# Display the count of product and change it into ProdukTerjual with price and group by product and price
+
   SELECT COUNT(Product) as ProdukTerjual, [Price Each] 
   FROM IndahTest2..Sales_April_2019$
   GROUP BY Product, [Price Each] 
 
+# Display the data by order ID, product, quantity and price
+
   SELECT [Order ID], Product, [Quantity Ordered], [Price Each]
   FROM IndahTest2..Sales_April_2019$
+
+# Display the Google Phone data based on order ID, product, quantity and price
 
   SELECT [Order ID], Product, [Quantity Ordered], [Price Each]
   FROM IndahTest2..Sales_April_2019$
   WHERE Product LIKE 'Google Phone%'
   ORDER BY 1,2,3,4
+
+# Display data where is not null and looking for the most sold out product 
 
   SELECT MAX(Product) AS ProdukTerjual, [Quantity Ordered], [Price Each]
   FROM IndahTest2..Sales_April_2019$
@@ -44,9 +58,13 @@
   GROUP BY Product, [Quantity Ordered], [Price Each]
   ORDER BY [Quantity Ordered] DESC
 
+# Display data just by two product which is AAABatteries and USB-C Cable
+
   SELECT *
   FROM IndahTest2..Sales_April_2019$
   WHERE Product IN ('AAABatteries (4-pack)','USB-C Charging Cable');
+
+# Display all the data from sales August 2019 and looking for product based on quantity order, largest to smallest
 
   Select *
   FROM IndahTest2..Sales_August_2019$
@@ -56,21 +74,29 @@
   GROUP BY Product, [Quantity Ordered]
   ORDER BY [Quantity Ordered] DESC
 
+# Display data from both files where the product price is bigger than 200
+
   SELECT Sales_April_2019$.Product, Sales_April_2019$.[Quantity Ordered], Sales_April_2019$.[Price Each], Sales_August_2019$.Product, Sales_August_2019$.[Quantity Ordered], Sales_August_2019$.[Price Each]
   FROM IndahTest2..Sales_April_2019$
   INNER JOIN Sales_August_2019$ ON Sales_April_2019$.Product = Sales_August_2019$.Product
   WHERE Sales_April_2019$.[Price Each] > 200
+
+# Display data from both files based on product and quantity ordered, largest to smallest
 
   SELECT Sales_April_2019$.Product, Sales_April_2019$.[Quantity Ordered], Sales_April_2019$.[Price Each], Sales_August_2019$.Product, Sales_August_2019$.[Quantity Ordered], Sales_August_2019$.[Price Each]
   FROM IndahTest2..Sales_April_2019$
   INNER JOIN Sales_August_2019$ ON Sales_April_2019$.Product = Sales_August_2019$.Product
   ORDER BY Sales_April_2019$.[Quantity Ordered], Sales_August_2019$.[Quantity Ordered] DESC
 
+# Display product and quantity ordered from both files
+
   Select Product, [Quantity Ordered]
   FROM IndahTest2..Sales_April_2019$
   UNION
   Select Product, [Quantity Ordered]
   FROM IndahTest2..Sales_August_2019$
+
+# Display product and quantity ordered of iPhone in both files
 
   Select Product, [Quantity Ordered]
   FROM IndahTest2..Sales_April_2019$
@@ -79,6 +105,8 @@
   Select Product, [Quantity Ordered]
   FROM IndahTest2..Sales_August_2019$
   WHERE Product='iPHone'
+
+# Display produckt and quantity ordered, when the quantity is less than 2 is labeled 'TidakLaku' and more that 1 as 'Laku', and the product who always stabil as 'PenjualanTidakBerubah'
 
   Select Product, [Quantity Ordered],
   CASE
@@ -88,6 +116,7 @@
   END AS RangkumanPenjualan
   FROM IndahTest2..Sales_August_2019$
 
+# Display product and quantity ordered from both flies who are the same  
   SELECT Product, [Quantity Ordered]
   FROM IndahTest2..Sales_August_2019$
   WHERE EXISTS (
